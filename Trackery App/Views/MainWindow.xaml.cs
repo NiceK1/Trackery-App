@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Trackery_App
+namespace Trackery_App.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
