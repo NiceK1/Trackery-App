@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trackery_App.Core;
+using System.Windows.Input;
 
 namespace Trackery_App.ViewModels
 {
@@ -11,8 +12,8 @@ namespace Trackery_App.ViewModels
     {
 
 
-        public RelayCommand HomeViewCommand { get; set; }
-        public RelayCommand DiscoveryViewCommand { get; set; }
+        public ICommand HomeViewCommand { get; set; }
+        public ICommand DiscoveryViewCommand { get; set; }
 
         public HomeViewModel HomeVM { get; set; }
         public DiscoveryViewModel DiscoveryVM { get; set; }

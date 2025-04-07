@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:Trackery_App"
              xmlns:viewModel="clr-namespace:Trackery_App.ViewModels"
              xmlns:view="clr-namespace:Trackery_App.Views"
-             StartupUri="Views/MainWindow.xaml">
+             StartupUri="Views/LoginScreen.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
