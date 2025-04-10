@@ -18,7 +18,7 @@ namespace Trackery_App.Infrastructure.Repositories
                 await connection.OpenAsync();
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = "SELECT COUNT(*) FROM [User] WHERE Username = @Username AND Password = @Password";
+                    command.CommandText = "SELECT COUNT(*) FROM [User] WHERE Username = @Username AND Password = @Password COLLATE Latin1_General_CS_AS";
                     command.Parameters.AddWithValue("@Username", credential.UserName);
                     command.Parameters.AddWithValue("@Password", credential.Password);
                     var result = await command.ExecuteScalarAsync();

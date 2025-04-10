@@ -46,7 +46,7 @@ namespace Trackery_App.ViewModels
             }
         }
         public ICommand LoginCommand { get; set; }
-        public ICommand RecoverPasswordCommand { get; set; }
+        public ICommand ResetPasswordCommand { get; set; }
         public ICommand ShowPasswordCommand { get; set; }
         public ICommand RememberPasswordCommand { get; set; }
         public LoginViewModel(INavigationService navigationService)
@@ -69,7 +69,7 @@ namespace Trackery_App.ViewModels
                 }
             },
             onException: ex => ErrorMessage = ex.Message);
-            RecoverPasswordCommand = new RelayCommand(o =>
+            ResetPasswordCommand = new RelayCommand(o =>
             {
                 // Implement password recovery logic here
             });
