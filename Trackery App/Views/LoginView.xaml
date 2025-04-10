@@ -13,7 +13,6 @@
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown">
-    
     <Border CornerRadius="24">
         <Border.Background>
             <ImageBrush ImageSource="/Images/background-image.png"
@@ -63,7 +62,8 @@
                             FontSize="16"
                             Cursor="Hand"
                             Grid.Column="1"
-                            Click="MinimizeButton_Click" Height="30" VerticalAlignment="Top">
+                            Click="MinimizeButton_Click" Height="30" VerticalAlignment="Top"
+                            IsTabStop="False">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="Blue"/>
@@ -92,7 +92,8 @@
                             FontSize="12"
                             Cursor="Hand"
                             Grid.Column="2"
-                            Click="CloseButton_Click">
+                            Click="CloseButton_Click"
+                            IsTabStop="False">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="Red"/>
@@ -154,7 +155,11 @@
                                         Stretch="None"
                                         AlignmentX="Left"/>
                         </TextBox.Background>
-
+                        
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
+                        </TextBox.InputBindings>
+                        
                     </TextBox>
                     <TextBlock Text="Password: "
                             Foreground="DarkGray"
@@ -182,7 +187,8 @@
                             FontSize="12"
                             Cursor="Hand"
                             Grid.Column="2"
-                            Margin="0,30,0,0">
+                            Margin="0,30,0,0"
+                            IsTabStop="False">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="#3aa0ff"/>
