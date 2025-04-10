@@ -1,30 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Trackery_App.Core
+internal class AsyncRelayCommand : ICommand
 {
-    internal class AsyncRelayCommand : ICommand
+    private readonly Func<object, Task> _executeAsync;
+    private readonly Func<object, bool> _canExecute;
+    private bool _isExecuting;
+
+    public event EventHandler CanExecuteChanged
     {
-        private readonly Func<object, Task> _execute;
-        private readonly Predicate<object> _canExecute;
+        add { CommandManager.RequerySuggested += value; }
+        remove { CommandManager.RequerySuggested -= value; }
+    }
 
-        public AsyncRelayCommand(Func<object, Task> execute, Predicate<object> canExecute = null)
+    public AsyncRelayCommand(Func<object, Task> executeAsync, Func<object, bool> canExecute = null)
+    {
+        _executeAsync = executeAsync ?? throw new ArgumentNullException(nameof(executeAsync));
+        _canExecute = canExecute;
+    }
+
+    public bool CanExecute(object parameter)
+    {
+        return !_isExecuting && (_canExecute == null || _canExecute(parameter));
+    }
+
+    public async void Execute(object parameter)
+    {
+        if (!CanExecute(parameter))
+            return;
+
+        try
         {
-            _execute = execute;
-            _canExecute = canExecute;
+            _isExecuting = true;
+            RaiseCanExecuteChanged();
+            await _executeAsync(parameter);
         }
-
-        public async void Execute(object parameter)
+        finally
         {
-            await _execute(parameter);
+            _isExecuting = false;
+            RaiseCanExecuteChanged();
         }
+    }
 
-        public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
-
-        public event EventHandler CanExecuteChanged;
+    public void RaiseCanExecuteChanged()
+    {
+        CommandManager.InvalidateRequerySuggested();
     }
 }
