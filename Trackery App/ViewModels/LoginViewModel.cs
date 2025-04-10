@@ -16,7 +16,6 @@ namespace Trackery_App.ViewModels
     internal class LoginViewModel : ObservableObject
     {
         private readonly INavigationService _navigationService;
-
         private string _username;
         private SecureString _password;
         private string _errorMessage;
@@ -68,7 +67,8 @@ namespace Trackery_App.ViewModels
                 {
                     NavigateToMainView();
                 }
-            });
+            },
+            onException: ex => ErrorMessage = ex.Message);
             RecoverPasswordCommand = new RelayCommand(o =>
             {
                 // Implement password recovery logic here
