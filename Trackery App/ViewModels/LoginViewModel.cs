@@ -58,11 +58,11 @@ namespace Trackery_App.ViewModels
             {
                 if (!CanExecuteLogin())
                 {
-                    ErrorMessage = "Username and password should be longer than 3 characthers.";
+                    ErrorMessage = "* Username and password should be longer than 3 characthers.";
                 }
                 else if (!await LoginAsync())
                 {
-                    ErrorMessage = "Invalid username or password.";
+                    ErrorMessage = "* Invalid username or password.";
                 }
                 else
                 {

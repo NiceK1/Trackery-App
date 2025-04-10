@@ -63,7 +63,7 @@
                             FontSize="16"
                             Cursor="Hand"
                             Grid.Column="1"
-                            Click="MinimizeButton_Click">
+                            Click="MinimizeButton_Click" Height="30" VerticalAlignment="Top">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="Blue"/>
@@ -120,7 +120,7 @@
                             Orientation="Vertical"
                             Margin="0,35,0,0"
                                 >
-                    <TextBlock Margin="0,100,0,0"
+                    <TextBlock Margin="0,50,0,0"
                                Text="Trackery App"
                                Foreground="White"
                                FontSize="25"
@@ -172,7 +172,8 @@
                                FontSize="12"
                                FontWeight="Medium"
                                Margin="0,10,0,0"
-                               TextWrapping="Wrap"/>
+                               TextWrapping="Wrap"
+                               Height="30"/>
                     <Button x:Name="LoginButton"
                             Command="{Binding LoginCommand}"
                             BorderThickness="0"
