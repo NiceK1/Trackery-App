@@ -53,8 +53,32 @@ namespace Trackery_App.Infrastructure.Repositories
 
         public UserModel GetUserByUsername(string username)
         {
-            // Implementation for getting a user by username
-            throw new NotImplementedException();
+            UserModel user = null;
+            using (var connection = GetConnection())
+            {
+                connection.OpenAsync();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM [User] WHERE Username = @Username";
+                    command.Parameters.AddWithValue("@Username", username);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            user = new UserModel
+                            {
+                                Id = reader[0].ToString(),
+                                Username = reader.GetString(1),
+                                Password = string.Empty,
+                                FirstName = reader.GetString(3),
+                                LastName = reader.GetString(4),
+                                Email = reader.GetString(5),
+                            };
+                        }
+                    }
+                }
+            }
+            return user;
         }
 
         public List<UserModel> GetAllUsers()
