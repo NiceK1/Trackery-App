@@ -23,7 +23,9 @@ namespace Trackery_App.Views
         public LoginView()
         {
             InitializeComponent();
-            this.DataContext = new LoginViewModel(new NavigationService());
+            var vm = new LoginViewModel(new NavigationService());
+            vm.OnBeforeLogin = CommitBindings;
+            DataContext = vm;
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -40,6 +42,10 @@ namespace Trackery_App.Views
         {
             WindowState = WindowState.Minimized;
         }
-
+        private void CommitBindings()
+        {
+            Username.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            Password.GetBindingExpression(BindablePasswordBox.PasswordProperty)?.UpdateSource();
+        }
     }
 }

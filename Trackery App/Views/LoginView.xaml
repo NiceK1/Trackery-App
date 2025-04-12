@@ -187,7 +187,7 @@
                         FontSize="13"
                         FontWeight="Medium"
                         Foreground="White"
-                        Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}">
+                        Text="{Binding Username, Mode=OneWayToSource, UpdateSourceTrigger=Explicit}">
                         <TextBox.Background>
                             <ImageBrush
                                 AlignmentX="Left"
@@ -206,10 +206,10 @@
                         FontWeight="Medium"
                         Foreground="DarkGray"
                         Text="Password: " />
-                    <local:BindablePasswordBox
+                    <local:BindablePasswordBox x:Name="Password"
                         Height="23"
                         Margin="0,5,0,0"
-                        Password="{Binding Password, Mode=OneWayToSource}" />
+                        Password="{Binding Password, Mode=OneWayToSource, UpdateSourceTrigger=Explicit}" />
                     <TextBlock
                         Height="30"
                         Margin="0,10,0,0"
