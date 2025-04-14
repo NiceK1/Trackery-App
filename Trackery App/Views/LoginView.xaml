@@ -23,15 +23,15 @@
         <Border BorderThickness="3" CornerRadius="20">
             <Border.BorderBrush>
                 <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1">
-                    <GradientStop Offset="0.0" Color="#462AD8" />
-                    <GradientStop Offset="1" Color="#3aa0ff" />
+                    <GradientStop Offset="0.0" Color="{StaticResource winBorderColor1}" />
+                    <GradientStop Offset="1" Color="{StaticResource winBorderColor2}" />
                 </LinearGradientBrush>
             </Border.BorderBrush>
 
             <Border.Background>
                 <LinearGradientBrush Opacity="0.7" StartPoint="0, 1" EndPoint="1, 0">
-                    <GradientStop Offset="0.0" Color="#272537" />
-                    <GradientStop Offset="1" Color="BlueViolet" />
+                    <GradientStop Offset="0.0" Color="{StaticResource primaryBackColor1}" />
+                    <GradientStop Offset="1" Color="{StaticResource primaryBackColor2}" />
                 </LinearGradientBrush>
             </Border.Background>
 
@@ -59,28 +59,8 @@
                     <Button
                         x:Name="MinimizeButton"
                         Grid.Column="1"
-                        Height="30"
-                        VerticalAlignment="Top"
-                        Background="Transparent"
-                        BorderThickness="0"
                         Click="MinimizeButton_Click"
-                        Cursor="Hand"
-                        FontSize="16"
-                        IsTabStop="False">
-                        <Button.Resources>
-                            <Style TargetType="Path">
-                                <Setter Property="Stroke" Value="DarkGray" />
-                                <Setter Property="StrokeThickness" Value="4" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
-                                        <Setter Property="Stroke" Value="#3aa0ff" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsPressed, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
-                                        <Setter Property="Stroke" Value="#1572BF" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Resources>
+                        Style="{StaticResource ControlsButtonStyle}">
 
                         <Path
                             Width="16"
@@ -90,43 +70,12 @@
                             Data="M 2,8 L 14,8"
                             StrokeEndLineCap="Round"
                             StrokeStartLineCap="Round" />
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border
-                                    Width="18"
-                                    Height="18"
-                                    Background="{TemplateBinding Background}"
-                                    CornerRadius="9">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
                     </Button>
                     <Button
                         x:Name="CloseButton"
                         Grid.Column="2"
-                        Height="30"
-                        VerticalAlignment="Top"
-                        Background="Transparent"
-                        BorderThickness="0"
                         Click="CloseButton_Click"
-                        Cursor="Hand"
-                        FontSize="16"
-                        IsTabStop="False">
-                        <Button.Resources>
-                            <Style TargetType="Path">
-                                <Setter Property="Stroke" Value="DarkGray" />
-                                <Setter Property="StrokeThickness" Value="4" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
-                                        <Setter Property="Stroke" Value="#3aa0ff" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsPressed, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
-                                        <Setter Property="Stroke" Value="#1572BF" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Resources>
+                        Style="{StaticResource ControlsButtonStyle}">
                         <Path
                             Width="16"
                             Height="16"
@@ -136,18 +85,6 @@
                             StrokeEndLineCap="Round"
                             StrokeLineJoin="Round"
                             StrokeStartLineCap="Round" />
-
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border
-                                    Width="18"
-                                    Height="18"
-                                    Background="{TemplateBinding Background}"
-                                    CornerRadius="9">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
                     </Button>
                 </Grid>
                 <StackPanel
@@ -206,7 +143,8 @@
                         FontWeight="Medium"
                         Foreground="DarkGray"
                         Text="Password: " />
-                    <local:BindablePasswordBox x:Name="Password"
+                    <local:BindablePasswordBox
+                        x:Name="Password"
                         Height="23"
                         Margin="0,5,0,0"
                         Password="{Binding Password, Mode=OneWayToSource, UpdateSourceTrigger=Explicit}" />
