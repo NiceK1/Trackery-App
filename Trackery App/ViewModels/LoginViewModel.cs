@@ -50,8 +50,6 @@ namespace Trackery_App.ViewModels
         public Action OnBeforeLogin { get; set; }
         public ICommand LoginCommand { get; set; }
         public ICommand ResetPasswordCommand { get; set; }
-        public ICommand ShowPasswordCommand { get; set; }
-        public ICommand RememberPasswordCommand { get; set; }
         public LoginViewModel(INavigationService navigationService)
         {
             

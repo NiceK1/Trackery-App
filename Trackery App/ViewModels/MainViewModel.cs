@@ -24,6 +24,9 @@ namespace Trackery_App.ViewModels
         private IUserRepository _userRepository;
         private object _currentView;
         private UserAccountModel _currentUserAccount;
+        private string _role;
+        private readonly string _picturePath;
+        public string PicturePath => _picturePath;
         public UserAccountModel CurrentUserAccount
         {
             get { return _currentUserAccount; }
@@ -46,6 +49,7 @@ namespace Trackery_App.ViewModels
         {
             _userRepository = new UserRepository();
             LoadCurrentUserAccount();
+            _picturePath = $"/Images/{_role}-avatar.png";
             HomeVM = new HomeViewModel();
             DiscoveryVM = new DiscoveryViewModel();
             CurrentView = HomeVM;
@@ -70,8 +74,9 @@ namespace Trackery_App.ViewModels
                 CurrentUserAccount = new UserAccountModel()
                 {
                     Username = user.Username,
-                    ProfilePicture = null
+                    ProfilePicture = null,
                 };
+                _role = user.Role;
             }
             else
             {

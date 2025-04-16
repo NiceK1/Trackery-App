@@ -73,6 +73,7 @@ namespace Trackery_App.Infrastructure.Repositories
                                 FirstName = reader.GetString(3),
                                 LastName = reader.GetString(4),
                                 Email = reader.GetString(5),
+                                Role = reader.GetString(6)
                             };
                         }
                     }
