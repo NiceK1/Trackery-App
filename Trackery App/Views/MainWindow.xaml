@@ -73,32 +73,37 @@
                                     Stretch="UniformToFill" />
                             </Ellipse.Fill>
                         </Ellipse>
-                        <Button
+                        <RadioButton
                             Background="Transparent"
                             BorderThickness="0"
-                            Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
+                            Cursor="Hand"
+                            GroupName="Views"
+                            Command="{Binding UserSettingsViewCommand}">
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="RadioButton">
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </ControlTemplate>
-                            </Button.Template>
+                            </RadioButton.Template>
 
                             <TextBlock FontSize="18" Text="{Binding CurrentUsername}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="White" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=RadioButton}}" Value="True">
                                                 <Setter Property="Foreground" Value="#3aa0ff" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsPressed, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                            <DataTrigger Binding="{Binding IsPressed, RelativeSource={RelativeSource AncestorType=RadioButton}}" Value="True">
                                                 <Setter Property="Foreground" Value="#1572BF" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=RadioButton}}" Value="True">
+                                                <Setter Property="Foreground" Value="#3AA0FF" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                        </Button>
+                        </RadioButton>
                     </StackPanel>
                 </Grid>
 
@@ -116,6 +121,7 @@
                     <RadioButton
                         Command="{Binding HomeViewCommand}"
                         IsChecked="True"
+                        GroupName="Views"
                         Style="{StaticResource MenuButtonTheme}"
                         Tag="{StaticResource color1}">
                         <StackPanel Orientation="Horizontal">
@@ -125,6 +131,7 @@
                     </RadioButton>
                     <RadioButton
                         Command="{Binding HomeViewCommand}"
+                        GroupName="Views"
                         Style="{StaticResource MenuButtonTheme}"
                         Tag="{StaticResource color6}">
                         <StackPanel Orientation="Horizontal">
@@ -134,6 +141,7 @@
                     </RadioButton>
                     <RadioButton
                         Command="{Binding HomeViewCommand}"
+                        GroupName="Views"
                         Style="{StaticResource MenuButtonTheme}"
                         Tag="{StaticResource color3}">
                         <StackPanel Orientation="Horizontal">
@@ -143,6 +151,7 @@
                     </RadioButton>
                     <RadioButton
                         Command="{Binding EmployeesViewCommand}"
+                        GroupName="Views"
                         Style="{StaticResource MenuButtonTheme}"
                         Tag="{StaticResource color7}">
                         <StackPanel Orientation="Horizontal">

@@ -36,8 +36,31 @@ namespace Trackery_App.Infrastructure.Repositories
 
         public bool UpdateUser(UserModel user)
         {
-            // Implementation for updating user details
-            throw new NotImplementedException();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = @"
+                UPDATE [User]
+                SET Email = @Email,
+                    Status = @Status,
+                    [Name] = @FirstName,
+                    LastName = @LastName,
+                    Role = @Role
+                WHERE Username = @Username";
+
+                    command.Parameters.AddWithValue("@Email", user.Email);
+                    command.Parameters.AddWithValue("@Status", user.Status);
+                    command.Parameters.AddWithValue("@FirstName", user.FirstName);
+                    command.Parameters.AddWithValue("@LastName", user.LastName);
+                    command.Parameters.AddWithValue("@Role", user.Role);
+                    command.Parameters.AddWithValue("@Username", user.Username);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
         }
 
         public bool DeleteUser(int userId)

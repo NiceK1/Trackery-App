@@ -7,6 +7,7 @@
     xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
     xmlns:local="clr-namespace:Trackery_App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -48,6 +49,41 @@
 
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#3AA0FF" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White" />
+
+                    <!--  keep drop‑down dark, too  -->
+                    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#1E1E2F" />
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Foreground" Value="#1E1E2F" />
+                        <Setter Property="Padding"    Value="4,2" />
+                        <Setter Property="IsEnabled"  Value="True" />
+                        <!-- 1) here’s the new ItemContainerStyle setter -->
+                        <Setter Property="ItemContainerStyle">
+                            <Setter.Value>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="Padding"    Value="4,2" />
+                                    <Style.Triggers>
+                                        <!-- hover -->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#252538" />
+                                        </Trigger>
+                                        <!-- selected -->
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#3AA0FF" />
+                                            <Setter Property="Foreground" Value="White" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+
+                        <!-- 2) your existing DataTrigger to disable on admin rows -->
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Username}" Value="admin">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
                 </DataGrid.Resources>
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
@@ -107,15 +143,19 @@
                         Binding="{Binding Email}"
                         ClipboardContentBinding="{x:Null}"
                         Header="Email" />
-                    <DataGridTextColumn
-                        Binding="{Binding Role}"
-                        ClipboardContentBinding="{x:Null}"
-                        Header="Role" />
+                    <DataGridTemplateColumn Header="Role">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding DataContext.RoleOptions, RelativeSource={RelativeSource AncestorType=Grid}}" SelectedItem="{Binding Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn ClipboardContentBinding="{x:Null}" Header="Status">
                         <DataGridTextColumn.Binding>
                             <Binding Converter="{StaticResource BoolToStringConverter}" Path="Status" />
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
+                    
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
