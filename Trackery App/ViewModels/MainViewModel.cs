@@ -9,6 +9,7 @@ using Trackery_App.Models;
 using Trackery_App.Infrastructure.Repositories;
 using System.Threading;
 using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace Trackery_App.ViewModels
 {
@@ -18,23 +19,23 @@ namespace Trackery_App.ViewModels
 
         public ICommand HomeViewCommand { get; set; }
         public ICommand DiscoveryViewCommand { get; set; }
+        public ICommand EmployeesViewCommand { get; set; }
 
         public HomeViewModel HomeVM { get; set; }
         public DiscoveryViewModel DiscoveryVM { get; set; }
+        public EmployeesViewModel EmployeesVM { get; set; }
         private IUserRepository _userRepository;
+        public ObservableCollection<UserModel> Employees { get; private set; }
+
         private object _currentView;
-        private UserAccountModel _currentUserAccount;
+        private string _currentUsername;
         private string _role;
         private readonly string _picturePath;
         public string PicturePath => _picturePath;
-        public UserAccountModel CurrentUserAccount
+        public string CurrentUsername
         {
-            get { return _currentUserAccount; }
-            set
-            {
-                _currentUserAccount = value;
-                OnPropertyChanged();
-            }
+            get { return _currentUsername; }
+            set { _currentUsername = value; OnPropertyChanged(); }
         }
         public object CurrentView
         {
@@ -49,9 +50,11 @@ namespace Trackery_App.ViewModels
         {
             _userRepository = new UserRepository();
             LoadCurrentUserAccount();
+            LoadEmployeesData();
             _picturePath = $"/Images/{_role}-avatar.png";
             HomeVM = new HomeViewModel();
             DiscoveryVM = new DiscoveryViewModel();
+            EmployeesVM = new EmployeesViewModel();
             CurrentView = HomeVM;
 
             HomeViewCommand = new RelayCommand(o =>
@@ -63,6 +66,10 @@ namespace Trackery_App.ViewModels
             {
                 CurrentView = DiscoveryVM;
             });
+            EmployeesViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = EmployeesVM;
+            });
 
         }
         private void LoadCurrentUserAccount()
@@ -71,11 +78,7 @@ namespace Trackery_App.ViewModels
             var user = _userRepository.GetUserByUsername(username);
             if (user != null)
             {
-                CurrentUserAccount = new UserAccountModel()
-                {
-                    Username = user.Username,
-                    ProfilePicture = null,
-                };
+                CurrentUsername = user.Username;
                 _role = user.Role;
             }
             else
@@ -84,6 +87,9 @@ namespace Trackery_App.ViewModels
                 Application.Current.Shutdown();
             }
 
+        }
+        public void LoadEmployeesData() {
+            Employees = new ObservableCollection<UserModel>(_userRepository.GetAllUsers());
         }
     }
 }

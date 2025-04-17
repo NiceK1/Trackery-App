@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Trackery_App.Core;
 using Trackery_App.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Trackery_App.Infrastructure.Repositories
 {
@@ -56,7 +57,7 @@ namespace Trackery_App.Infrastructure.Repositories
             UserModel user = null;
             using (var connection = GetConnection())
             {
-                connection.OpenAsync();
+                connection.Open();
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT * FROM [User] WHERE Username = @Username";
@@ -84,8 +85,35 @@ namespace Trackery_App.Infrastructure.Repositories
 
         public List<UserModel> GetAllUsers()
         {
-            // Implementation for getting all users
-            throw new NotImplementedException();
+            var users = new List<UserModel>();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM [User]";
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var user = new UserModel
+                            {
+                                Id = reader[0].ToString(),
+                                Username = reader.GetString(1),
+                                Password = string.Empty,
+                                FirstName = reader.GetString(3),
+                                LastName = reader.GetString(4),
+                                Email = reader.GetString(5),
+                                Role = reader.GetString(6),
+                                Status = reader.GetBoolean(7)
+                            };
+
+                            users.Add(user);
+                        }
+                    }
+                }
+            }
+            return users;
         }
     }
 }

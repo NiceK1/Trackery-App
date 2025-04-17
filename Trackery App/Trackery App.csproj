@@ -87,6 +87,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\EmployeesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -100,11 +104,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\AsyncRelayCommand.cs" />
+    <Compile Include="Core\BoolToStringConverter.cs" />
     <Compile Include="Core\IUserRepository.cs" />
     <Compile Include="Infrastructure\Repositories\RepositoryBase.cs" />
     <Compile Include="Infrastructure\Repositories\UserRepository.cs" />
-    <Compile Include="Models\UserAccountModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="ViewModels\EmployeesViewModel.cs" />
     <Compile Include="Views\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
@@ -113,6 +118,9 @@
     <Compile Include="Core\ObservableObject.cs" />
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="Views\EmployeesView.xaml.cs">
+      <DependentUpon>EmployeesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>

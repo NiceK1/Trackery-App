@@ -1,0 +1,123 @@
+﻿<UserControl
+    x:Class="Trackery_App.Views.EmployeesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:Trackery_App.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+    xmlns:local="clr-namespace:Trackery_App.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <core:BoolToStringConverter
+            x:Key="BoolToStringConverter"
+            FalseText="Absent"
+            TrueText="Present" />
+    </UserControl.Resources>
+    <Grid DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
+
+
+        <Border
+            Padding="10"
+            Background="#200F53"
+            CornerRadius="10">
+            <DataGrid
+                x:Name="UsersDataGrid"
+                AlternatingRowBackground="#252538"
+                AutoGenerateColumns="False"
+                Background="#200F53"
+                BorderThickness="0"
+                ColumnWidth="*"
+                IsReadOnly="True"
+                ItemsSource="{Binding Employees}"
+                RowBackground="#1E1E2F">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="#BCBEE0" />
+                        <Setter Property="Padding" Value="10,0,0,10" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="FontSize" Value="15" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#3AA0FF" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
+
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#3AA0FF" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White" />
+                </DataGrid.Resources>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="BorderThickness" Value="0,0,0,1" />
+                        <Setter Property="BorderBrush" Value="#35354D" />
+                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                        <Setter Property="OverridesDefaultStyle" Value="True" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridRow">
+                                    <Border
+                                        x:Name="RowBorder"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                        <DataGridCellsPresenter />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="RowBorder" Property="Background" Value="#3AA0FF" />
+                                            <Setter Property="Foreground" Value="White" />
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected" Value="True" />
+                                                <Condition Property="IsKeyboardFocusWithin" Value="False" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="RowBorder" Property="Background" Value="#3AA0FF" />
+                                            <Setter Property="Foreground" Value="White" />
+                                        </MultiTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Id}"
+                        ClipboardContentBinding="{x:Null}"
+                        Header="ID" />
+                    <DataGridTextColumn
+                        Binding="{Binding Username}"
+                        ClipboardContentBinding="{x:Null}"
+                        Header="Username" />
+                    <DataGridTextColumn
+                        Binding="{Binding FirstName}"
+                        ClipboardContentBinding="{x:Null}"
+                        Header="First name" />
+                    <DataGridTextColumn
+                        Binding="{Binding LastName}"
+                        ClipboardContentBinding="{x:Null}"
+                        Header="Last name" />
+                    <DataGridTextColumn
+                        Binding="{Binding Email}"
+                        ClipboardContentBinding="{x:Null}"
+                        Header="Email" />
+                    <DataGridTextColumn
+                        Binding="{Binding Role}"
+                        ClipboardContentBinding="{x:Null}"
+                        Header="Role" />
+                    <DataGridTextColumn ClipboardContentBinding="{x:Null}" Header="Status">
+                        <DataGridTextColumn.Binding>
+                            <Binding Converter="{StaticResource BoolToStringConverter}" Path="Status" />
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>
