@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Trackery_App.Core
 {
-    internal class ObservableObject : INotifyPropertyChanged
+    public class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

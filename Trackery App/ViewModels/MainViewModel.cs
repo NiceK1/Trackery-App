@@ -10,6 +10,8 @@ using Trackery_App.Infrastructure.Repositories;
 using System.Threading;
 using System.Windows;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Trackery_App.ViewModels
 {
@@ -20,10 +22,12 @@ namespace Trackery_App.ViewModels
         public ICommand HomeViewCommand { get; set; }
         public ICommand DiscoveryViewCommand { get; set; }
         public ICommand EmployeesViewCommand { get; set; }
+        public ICommand UserSettingsViewCommand { get; set; }
 
         public HomeViewModel HomeVM { get; set; }
         public DiscoveryViewModel DiscoveryVM { get; set; }
         public EmployeesViewModel EmployeesVM { get; set; }
+        public UserSettingsViewModel UserSettingsVM { get; set; }
         private IUserRepository _userRepository;
         public ObservableCollection<UserModel> Employees
         {
@@ -32,10 +36,18 @@ namespace Trackery_App.ViewModels
         }
         public ObservableCollection<string> RoleOptions { get; }
   = new ObservableCollection<string> { "admin", "boss", "employee" };
+        public ObservableCollection<string> StatusOptions { get; }
+  = new ObservableCollection<string> { "Present", "Absent" };
 
         private object _currentView;
         private string _currentUsername;
         private string _role;
+        private UserModel _currentUser;
+        public UserModel CurrentUser
+        {
+            get { return _currentUser; }
+            set { _currentUser = value; OnPropertyChanged(); }
+        }
         private readonly string _picturePath;
         public string PicturePath => _picturePath;
         public string CurrentUsername
@@ -56,12 +68,12 @@ namespace Trackery_App.ViewModels
         public MainViewModel()
         {
             _userRepository = new UserRepository();
-            LoadCurrentUserAccount();
             LoadEmployeesData();
             _picturePath = $"/Images/{_role}-avatar.png";
             HomeVM = new HomeViewModel();
             DiscoveryVM = new DiscoveryViewModel();
             EmployeesVM = new EmployeesViewModel();
+            UserSettingsVM = new UserSettingsViewModel();
             CurrentView = HomeVM;
 
             HomeViewCommand = new RelayCommand(o =>
@@ -77,16 +89,18 @@ namespace Trackery_App.ViewModels
             {
                 CurrentView = EmployeesVM;
             });
+            UserSettingsViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = UserSettingsVM;
+            });
 
         }
         private void LoadCurrentUserAccount()
         {
-            string username = Thread.CurrentPrincipal.Identity.Name;
-            var user = _userRepository.GetUserByUsername(username);
-            if (user != null)
+            if (_currentUser != null)
             {
-                CurrentUsername = user.Username;
-                _role = user.Role;
+                CurrentUsername = _currentUser.Username;
+                _role = _currentUser.Role;
             }
             else
             {
@@ -97,7 +111,28 @@ namespace Trackery_App.ViewModels
         }
         public void LoadEmployeesData()
         {
-            Employees = new ObservableCollection<UserModel>(_userRepository.GetAllUsers());
+            var allUsers = _userRepository.GetAllUsers();
+            Employees = new ObservableCollection<UserModel>(allUsers);
+            foreach (var user in allUsers)
+            {
+                user.PropertyChanged += OnUserModelChanged;
+                if (user.Username == Thread.CurrentPrincipal.Identity.Name)
+                {
+                    _currentUser = user;
+                }
+            }
+            LoadCurrentUserAccount();
+        }
+
+        private void OnUserModelChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is UserModel user)
+            {
+                if (e.PropertyName == nameof(UserModel.Email) || e.PropertyName == nameof(UserModel.Status) || e.PropertyName == nameof(UserModel.FirstName) || e.PropertyName == nameof(UserModel.LastName) || e.PropertyName == nameof(UserModel.Role))
+                {
+                    _userRepository.UpdateUser(user);
+                }
+            }
         }
     }
 }
