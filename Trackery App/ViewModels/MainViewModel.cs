@@ -25,7 +25,13 @@ namespace Trackery_App.ViewModels
         public DiscoveryViewModel DiscoveryVM { get; set; }
         public EmployeesViewModel EmployeesVM { get; set; }
         private IUserRepository _userRepository;
-        public ObservableCollection<UserModel> Employees { get; private set; }
+        public ObservableCollection<UserModel> Employees
+        {
+            get;
+            set;
+        }
+        public ObservableCollection<string> RoleOptions { get; }
+  = new ObservableCollection<string> { "admin", "boss", "employee" };
 
         private object _currentView;
         private string _currentUsername;
@@ -40,7 +46,8 @@ namespace Trackery_App.ViewModels
         public object CurrentView
         {
             get { return _currentView; }
-            set { 
+            set
+            {
                 _currentView = value;
                 OnPropertyChanged();
             }
@@ -88,7 +95,8 @@ namespace Trackery_App.ViewModels
             }
 
         }
-        public void LoadEmployeesData() {
+        public void LoadEmployeesData()
+        {
             Employees = new ObservableCollection<UserModel>(_userRepository.GetAllUsers());
         }
     }
