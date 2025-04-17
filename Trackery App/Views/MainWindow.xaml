@@ -130,7 +130,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
-                        Command="{Binding HomeViewCommand}"
+                        Command="{Binding StockViewCommand}"
                         GroupName="Views"
                         Style="{StaticResource MenuButtonTheme}"
                         Tag="{StaticResource color6}">
@@ -140,7 +140,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
-                        Command="{Binding HomeViewCommand}"
+                        Command="{Binding DeliveriesViewCommand}"
                         GroupName="Views"
                         Style="{StaticResource MenuButtonTheme}"
                         Tag="{StaticResource color3}">

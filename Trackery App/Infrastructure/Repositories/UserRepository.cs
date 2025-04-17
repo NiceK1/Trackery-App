@@ -69,11 +69,6 @@ namespace Trackery_App.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public UserModel GetUserById(int userId)
-        {
-            // Implementation for getting a user by ID
-            throw new NotImplementedException();
-        }
 
         public UserModel GetUserByUsername(string username)
         {

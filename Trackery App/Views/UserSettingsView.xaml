@@ -17,99 +17,101 @@
             TrueText="Present" />
     </UserControl.Resources>
     <Grid DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
-        <Border
-            Padding="10"
-            Background="#200F53"
-            CornerRadius="10">
-            <StackPanel>
-                <StackPanel.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="15" />
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="Foreground" Value="#BCBEE0" />
-                    </Style>
-                </StackPanel.Resources>
-
-                <!--  Username (read-only)  -->
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock Width="100" Text="Username:" />
-                    <TextBlock Foreground="White" Text="{Binding CurrentUser.Username}" />
-                </StackPanel>
-
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock Width="100" Text="First Name:" />
-                    <TextBox
-                        x:Name="FirstName"
-                        Width="200"
-                        Text="{Binding CurrentUser.FirstName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
-                </StackPanel>
-
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock Width="100" Text="Last Name:" />
-                    <TextBox
-                        x:Name="LastName"
-                        Width="200"
-                        Text="{Binding CurrentUser.LastName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
-                </StackPanel>
-
-                <!--  Email (editable)  -->
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock Width="100" Text="Email:" />
-                    <TextBox
-                        x:Name="Email"
-                        Width="200"
-                        Text="{Binding CurrentUser.Email, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
-                </StackPanel>
-
-                <!--  Status (editable via ComboBox)  -->
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock Width="100" Text="Status:" />
-                    <ComboBox
-                        x:Name="Status"
-                        Width="200"
-                        Foreground="Black"
-                        ItemsSource="{Binding StatusOptions}"
-                        SelectedItem="{Binding CurrentUser.Status, Mode=TwoWay, Converter={StaticResource BoolToStringConverter}, UpdateSourceTrigger=Explicit}" />
-
-                </StackPanel>
-                <Button
-                    x:Name="SaveButton"
-                    Grid.Column="2"
-                    Margin="125,30,0,0"
-                    HorizontalAlignment="Left"
-                    BorderThickness="0"
-                    Click="CommitBindings"
-                    Content="Save"
-                    Cursor="Hand"
-                    FontSize="12"
-                    Foreground="White"
-                    IsTabStop="False">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="#1E8BE6" />
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#3aa0ff" />
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="#1572BF" />
-                                </Trigger>
-                            </Style.Triggers>
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <Border
+                Padding="10"
+                Background="#200F53"
+                CornerRadius="10">
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="15" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Foreground" Value="#BCBEE0" />
                         </Style>
-                    </Button.Style>
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border
-                                Width="150"
-                                Height="40"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="20">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-            </StackPanel>
-        </Border>
+                    </StackPanel.Resources>
+
+                    <!--  Username (read-only)  -->
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Width="100" Text="Username:" />
+                        <TextBlock Foreground="White" Text="{Binding CurrentUser.Username}" />
+                    </StackPanel>
+
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Width="100" Text="First Name:" />
+                        <TextBox
+                            x:Name="FirstName"
+                            Width="200"
+                            Text="{Binding CurrentUser.FirstName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+                    </StackPanel>
+
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Width="100" Text="Last Name:" />
+                        <TextBox
+                            x:Name="LastName"
+                            Width="200"
+                            Text="{Binding CurrentUser.LastName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+                    </StackPanel>
+
+                    <!--  Email (editable)  -->
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Width="100" Text="Email:" />
+                        <TextBox
+                            x:Name="Email"
+                            Width="200"
+                            Text="{Binding CurrentUser.Email, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+                    </StackPanel>
+
+                    <!--  Status (editable via ComboBox)  -->
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Width="100" Text="Status:" />
+                        <ComboBox
+                            x:Name="Status"
+                            Width="200"
+                            Foreground="Black"
+                            ItemsSource="{Binding StatusOptions}"
+                            SelectedItem="{Binding CurrentUser.Status, Mode=TwoWay, Converter={StaticResource BoolToStringConverter}, UpdateSourceTrigger=Explicit}" />
+
+                    </StackPanel>
+                    <Button
+                        x:Name="SaveButton"
+                        Grid.Column="2"
+                        Margin="0,30,0,0"
+                        HorizontalAlignment="Center"
+                        BorderThickness="0"
+                        Click="CommitBindings"
+                        Content="Save"
+                        Cursor="Hand"
+                        FontSize="12"
+                        Foreground="White"
+                        IsTabStop="False">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#1E8BE6" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#3aa0ff" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="#1572BF" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border
+                                    Width="150"
+                                    Height="40"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="20">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

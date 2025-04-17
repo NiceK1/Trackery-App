@@ -14,7 +14,6 @@ namespace Trackery_App.Core
         bool RegisterUser(UserModel user);
         bool UpdateUser(UserModel user);
         bool DeleteUser(int userId);
-        UserModel GetUserById(int userId);
         UserModel GetUserByUsername(string username);
         List<UserModel> GetAllUsers();
     }
