@@ -53,6 +53,7 @@
                         <RowDefinition />
                         <RowDefinition Height="100" />
                     </Grid.RowDefinitions>
+
                     <StackPanel
                         Grid.Row="1"
                         Margin="20,0,0,0"
@@ -69,16 +70,35 @@
                                     AlignmentX="Center"
                                     AlignmentY="Center"
                                     ImageSource="{Binding PicturePath, Mode=OneTime}"
-                                    Stretch="UniformToFill">
-                                </ImageBrush>
+                                    Stretch="UniformToFill" />
                             </Ellipse.Fill>
                         </Ellipse>
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="18"
-                            Foreground="White"
-                            Text="{Binding CurrentUserAccount.Username}" />
+                        <Button
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </ControlTemplate>
+                            </Button.Template>
+
+                            <TextBlock FontSize="18" Text="{Binding CurrentUsername}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                                <Setter Property="Foreground" Value="#3aa0ff" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsPressed, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                                <Setter Property="Foreground" Value="#1572BF" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Button>
                     </StackPanel>
                 </Grid>
 
@@ -122,7 +142,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton
-                        Command="{Binding DiscoveryViewCommand}"
+                        Command="{Binding EmployeesViewCommand}"
                         Style="{StaticResource MenuButtonTheme}"
                         Tag="{StaticResource color7}">
                         <StackPanel Orientation="Horizontal">
