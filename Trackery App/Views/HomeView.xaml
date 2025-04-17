@@ -8,125 +8,74 @@
     d:DesignHeight="580"
     d:DesignWidth="1280"
     mc:Ignorable="d">
-    <StackPanel>
-        <TextBlock
-            Margin="0,0,0,20"
-            HorizontalAlignment="Left"
-            FontSize="28"
-            Foreground="White"
-            Text="Discover" />
+    <Grid Margin="0,20,0,20" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-            <Border Width="400" Height="200">
-
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 2">
-                        <GradientStop Offset="0.0" Color="#5bc3ff" />
-                        <GradientStop Offset="1" Color="#3aa0ff" />
-
-                    </LinearGradientBrush>
-                </Border.Background>
-
-                <Border.Clip>
-                    <RectangleGeometry
-                        RadiusX="10"
-                        RadiusY="10"
-                        Rect="0,0,400,200" />
-                </Border.Clip>
-
-                <Grid>
-                    <StackPanel>
-                        <TextBlock
-                            Margin="20,10,10,0"
-                            FontSize="28"
-                            Foreground="White"
-                            Text="World leader&#x0a;in global finance" />
-
-                        <TextBlock
-                            Margin="20,10,10,0"
-                            FontSize="18"
-                            Foreground="White"
-                            Text="Get started today!" />
-                    </StackPanel>
-
-                    <Image
-                        Width="250"
-                        Height="250"
-                        Margin="0,0,-29,-50"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Source="/Images/roflan.png" />
-
-                </Grid>
-            </Border>
-
-            <Border
-                Width="200"
-                Height="200"
-                Margin="45,0,0,0"
-                CornerRadius="10">
-
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 2">
-                        <GradientStop Offset="0.0" Color="#ffc554" />
-                        <GradientStop Offset="1" Color="#ffb73a" />
-
-                    </LinearGradientBrush>
-                </Border.Background>
-
-
-                <Image
-                    Width="200"
-                    Height="212"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Source="/Images/amaly.png" />
-
-            </Border>
-        </StackPanel>
-
-        <StackPanel>
-
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="Margin" Value="15,0,0,0" />
-                </Style>
-            </StackPanel.Resources>
-
-            <TextBlock
-                Margin="0,0,0,20"
-                HorizontalAlignment="Left"
-                FontSize="20"
-                Foreground="White"
-                Text="Most Watched" />
-
-            <StackPanel Orientation="Horizontal">
-                <Border
-                    Width="150"
-                    Height="150"
-                    Margin="0"
-                    Background="#844eff"
-                    CornerRadius="10" />
-
-                <Border
-                    Width="150"
-                    Height="150"
-                    Background="#4e99ff"
-                    CornerRadius="10" />
-
-                <Border
-                    Width="150"
-                    Height="150"
-                    Background="#4eff91"
-                    CornerRadius="10" />
-
-                <Border
-                    Width="150"
-                    Height="150"
-                    Background="#ecff4e"
-                    CornerRadius="10" />
+        <!-- Pile 1 -->
+        <Border Grid.Column="0"
+            Background="{StaticResource color6}"
+            CornerRadius="12"
+            Margin="10"
+            Padding="20">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock
+                Text="{Binding Stock.Count}"
+                FontSize="40"
+                FontWeight="Bold"
+                Foreground="#DCE6F2"
+                HorizontalAlignment="Center" />
+                <TextBlock
+                Text="Items in Stock"
+                FontSize="40"
+                Foreground="#DCE6F2"
+                HorizontalAlignment="Center" />
             </StackPanel>
+        </Border>
 
-        </StackPanel>
-    </StackPanel>
+        <!-- Pile 2 -->
+        <Border Grid.Column="1"
+            Background="{StaticResource color3}"
+            CornerRadius="12"
+            Margin="10"
+            Padding="20">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock
+                Text="{Binding Deliveries.Count}"
+                FontSize="40"
+                FontWeight="Bold"
+                Foreground="#DCE6F2"
+                HorizontalAlignment="Center" />
+                <TextBlock
+                Text="Deliveries"
+                FontSize="40"
+                Foreground="#DCE6F2"
+                HorizontalAlignment="Center" />
+            </StackPanel>
+        </Border>
+
+        <!-- Pile 3 -->
+        <Border Grid.Column="2"
+            Background="{StaticResource color7}"
+            CornerRadius="12"
+            Margin="10"
+            Padding="20">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock
+                Text="{Binding Employees.Count}"
+                FontSize="40"
+                FontWeight="Bold"
+                Foreground="#DCE6F2"
+                HorizontalAlignment="Center" />
+                <TextBlock
+                Text="Workers"
+                FontSize="40"
+                Foreground="#DCE6F2"
+                HorizontalAlignment="Center" />
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>

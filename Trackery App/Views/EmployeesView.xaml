@@ -26,23 +26,9 @@
             CornerRadius="10">
             <DataGrid
                 x:Name="UsersDataGrid"
-                AlternatingRowBackground="#252538"
-                AutoGenerateColumns="False"
-                Background="#200F53"
-                BorderThickness="0"
-                ColumnWidth="*"
-                IsReadOnly="True"
                 ItemsSource="{Binding Employees}"
-                RowBackground="#1E1E2F">
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Foreground" Value="#BCBEE0" />
-                        <Setter Property="Padding" Value="10,0,0,10" />
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="FontSize" Value="15" />
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
+                Style="{StaticResource DataGridTheme}">
+
                 <DataGrid.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#3AA0FF" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
@@ -54,20 +40,21 @@
                     <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#1E1E2F" />
                     <Style TargetType="ComboBox">
                         <Setter Property="Foreground" Value="#1E1E2F" />
-                        <Setter Property="Padding"    Value="4,2" />
-                        <Setter Property="IsEnabled"  Value="True" />
-                        <!-- 1) here’s the new ItemContainerStyle setter -->
+                        <Setter Property="Padding" Value="4,2" />
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Setter Property="IsEnabled" Value="{Binding DataContext.IsRoleChangeEnabled, RelativeSource={RelativeSource AncestorType=Grid}}" />
+                        <!--  1) here’s the new ItemContainerStyle setter  -->
                         <Setter Property="ItemContainerStyle">
                             <Setter.Value>
                                 <Style TargetType="ComboBoxItem">
                                     <Setter Property="Foreground" Value="White" />
-                                    <Setter Property="Padding"    Value="4,2" />
+                                    <Setter Property="Padding" Value="4,2" />
                                     <Style.Triggers>
-                                        <!-- hover -->
+                                        <!--  hover  -->
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Background" Value="#252538" />
                                         </Trigger>
-                                        <!-- selected -->
+                                        <!--  selected  -->
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Background" Value="#3AA0FF" />
                                             <Setter Property="Foreground" Value="White" />
@@ -77,7 +64,7 @@
                             </Setter.Value>
                         </Setter>
 
-                        <!-- 2) your existing DataTrigger to disable on admin rows -->
+                        <!--  2) your existing DataTrigger to disable on admin rows  -->
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Username}" Value="admin">
                                 <Setter Property="IsEnabled" Value="False" />
@@ -85,43 +72,7 @@
                         </Style.Triggers>
                     </Style>
                 </DataGrid.Resources>
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Foreground" Value="White" />
-                        <Setter Property="BorderThickness" Value="0,0,0,1" />
-                        <Setter Property="BorderBrush" Value="#35354D" />
-                        <Setter Property="SnapsToDevicePixels" Value="True" />
-                        <Setter Property="OverridesDefaultStyle" Value="True" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="DataGridRow">
-                                    <Border
-                                        x:Name="RowBorder"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                        <DataGridCellsPresenter />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="RowBorder" Property="Background" Value="#3AA0FF" />
-                                            <Setter Property="Foreground" Value="White" />
-                                        </Trigger>
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsSelected" Value="True" />
-                                                <Condition Property="IsKeyboardFocusWithin" Value="False" />
-                                            </MultiTrigger.Conditions>
-                                            <Setter TargetName="RowBorder" Property="Background" Value="#3AA0FF" />
-                                            <Setter Property="Foreground" Value="White" />
-                                        </MultiTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </DataGrid.RowStyle>
+
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Id}"
@@ -146,7 +97,7 @@
                     <DataGridTemplateColumn Header="Role">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding DataContext.RoleOptions, RelativeSource={RelativeSource AncestorType=Grid}}" SelectedItem="{Binding Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ComboBox ItemsSource="{Binding DataContext.RoleOptions, RelativeSource={RelativeSource AncestorType=Grid}}" SelectedItem="{Binding Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -155,7 +106,7 @@
                             <Binding Converter="{StaticResource BoolToStringConverter}" Path="Status" />
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    
+
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

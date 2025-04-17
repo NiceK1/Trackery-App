@@ -20,14 +20,28 @@ namespace Trackery_App.ViewModels
 
 
         public ICommand HomeViewCommand { get; set; }
-        public ICommand DiscoveryViewCommand { get; set; }
+        public ICommand StockViewCommand { get; set; }
+        public ICommand DeliveriesViewCommand { get; set; }
         public ICommand EmployeesViewCommand { get; set; }
         public ICommand UserSettingsViewCommand { get; set; }
 
         public HomeViewModel HomeVM { get; set; }
-        public DiscoveryViewModel DiscoveryVM { get; set; }
+        public StockViewModel StockVM { get; set; }
+        public DeliveriesViewModel DeliveriesVM { get; set; }
         public EmployeesViewModel EmployeesVM { get; set; }
         public UserSettingsViewModel UserSettingsVM { get; set; }
+        private IStockRepository _stockRepository;
+        public ObservableCollection<StockModel> Stock
+        {
+            get;
+            set;
+        }
+        private IDeliveryRepository _deliveryRepository;
+        public ObservableCollection<DeliveryModel> Deliveries
+        {
+            get;
+            set;
+        }
         private IUserRepository _userRepository;
         public ObservableCollection<UserModel> Employees
         {
@@ -42,6 +56,16 @@ namespace Trackery_App.ViewModels
         private object _currentView;
         private string _currentUsername;
         private string _role;
+        private bool _isRoleChangeEnabled;
+        public bool IsRoleChangeEnabled
+        {
+            get => _isRoleChangeEnabled;
+            set
+            {
+                _isRoleChangeEnabled = value;
+                OnPropertyChanged();
+            }
+        }
         private UserModel _currentUser;
         public UserModel CurrentUser
         {
@@ -68,10 +92,15 @@ namespace Trackery_App.ViewModels
         public MainViewModel()
         {
             _userRepository = new UserRepository();
+            _deliveryRepository = new DeliveryRepository();
+            _stockRepository = new StockRepository();
             LoadEmployeesData();
+            LoadDeliveriesData();
+            LoadStockData();
             _picturePath = $"/Images/{_role}-avatar.png";
             HomeVM = new HomeViewModel();
-            DiscoveryVM = new DiscoveryViewModel();
+            StockVM = new StockViewModel();
+            DeliveriesVM = new DeliveriesViewModel();
             EmployeesVM = new EmployeesViewModel();
             UserSettingsVM = new UserSettingsViewModel();
             CurrentView = HomeVM;
@@ -80,10 +109,13 @@ namespace Trackery_App.ViewModels
             {
                 CurrentView = HomeVM;
             });
-
-            DiscoveryViewCommand = new RelayCommand(o =>
+            StockViewCommand = new RelayCommand(o =>
             {
-                CurrentView = DiscoveryVM;
+                CurrentView = StockVM;
+            });
+            DeliveriesViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = DeliveriesVM;
             });
             EmployeesViewCommand = new RelayCommand(o =>
             {
@@ -95,12 +127,29 @@ namespace Trackery_App.ViewModels
             });
 
         }
+
+
+        public void LoadEmployeesData()
+        {
+            var allUsers = _userRepository.GetAllUsers();
+            Employees = new ObservableCollection<UserModel>(allUsers);
+            foreach (var user in allUsers)
+            {
+                user.PropertyChanged += OnUserModelChanged;
+                if (user.Username.ToLower() == Thread.CurrentPrincipal.Identity.Name.ToLower())
+                {
+                    _currentUser = user;
+                }
+            }
+            LoadCurrentUserAccount();
+        }
         private void LoadCurrentUserAccount()
         {
             if (_currentUser != null)
             {
                 CurrentUsername = _currentUser.Username;
                 _role = _currentUser.Role;
+                ResolveRoleSpecifics();
             }
             else
             {
@@ -109,21 +158,25 @@ namespace Trackery_App.ViewModels
             }
 
         }
-        public void LoadEmployeesData()
+        private void ResolveRoleSpecifics()
         {
-            var allUsers = _userRepository.GetAllUsers();
-            Employees = new ObservableCollection<UserModel>(allUsers);
-            foreach (var user in allUsers)
-            {
-                user.PropertyChanged += OnUserModelChanged;
-                if (user.Username == Thread.CurrentPrincipal.Identity.Name)
-                {
-                    _currentUser = user;
-                }
-            }
-            LoadCurrentUserAccount();
-        }
 
+            switch (_currentUser.Role)
+            {
+                case "admin":
+                    IsRoleChangeEnabled = true;
+                    break;
+                case "boss":
+                    IsRoleChangeEnabled = true;
+                    break;
+                case "employee":
+                    IsRoleChangeEnabled = false;
+                    break;
+                default:
+                    IsRoleChangeEnabled = false;
+                    break;
+            }
+        }
         private void OnUserModelChanged(object sender, PropertyChangedEventArgs e)
         {
             if (sender is UserModel user)
@@ -133,6 +186,15 @@ namespace Trackery_App.ViewModels
                     _userRepository.UpdateUser(user);
                 }
             }
+        }
+
+        private void LoadDeliveriesData()
+        {
+            Deliveries = new ObservableCollection<DeliveryModel>(_deliveryRepository.GetDeliveries());
+        }
+        private void LoadStockData()
+        {
+            Stock = new ObservableCollection<StockModel>(_stockRepository.GetStock());
         }
     }
 }

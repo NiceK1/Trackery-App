@@ -13,14 +13,19 @@
                 <ResourceDictionary Source="Theme/ControlsTheme.xaml"/>
                 <ResourceDictionary Source="Theme/MenuButtonTheme.xaml" />
                 <ResourceDictionary Source="Theme/TextBoxTheme.xaml" />
+                <ResourceDictionary Source="/Theme/DataGridTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
                 <view:HomeView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewModel:DiscoveryViewModel}">
-                <view:DiscoveryView />
+            <DataTemplate DataType="{x:Type viewModel:StockViewModel}">
+                <view:StockView />
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModel:DeliveriesViewModel}">
+                <view:DeliveriesView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModel:EmployeesViewModel}">
