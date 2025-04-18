@@ -12,6 +12,8 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Windows.Data;
+using System.Windows.Forms.VisualStyles;
 
 namespace Trackery_App.ViewModels
 {
@@ -30,6 +32,20 @@ namespace Trackery_App.ViewModels
         public DeliveriesViewModel DeliveriesVM { get; set; }
         public EmployeesViewModel EmployeesVM { get; set; }
         public UserSettingsViewModel UserSettingsVM { get; set; }
+        public ICollectionView FilteredDataGrid { get; set; }
+        public ICollectionView StockDefaultView { get; set; }
+        public ICollectionView DeliveriesDefaultView { get; set; }
+        public ICollectionView EmployeesDefaultView { get; set; }
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                FilteredDataGrid.Refresh();
+            }
+        }
         private IStockRepository _stockRepository;
         public ObservableCollection<StockModel> Stock
         {
@@ -66,6 +82,16 @@ namespace Trackery_App.ViewModels
                 OnPropertyChanged();
             }
         }
+        private bool _isSearchVisible = false;
+        public bool IsSearchVisible
+        {
+            get => _isSearchVisible;
+            set
+            {
+                _isSearchVisible = value;
+                OnPropertyChanged();
+            }
+        }
         private UserModel _currentUser;
         public UserModel CurrentUser
         {
@@ -97,6 +123,9 @@ namespace Trackery_App.ViewModels
             LoadEmployeesData();
             LoadDeliveriesData();
             LoadStockData();
+            StockDefaultView = CollectionViewSource.GetDefaultView(Stock);
+            DeliveriesDefaultView = CollectionViewSource.GetDefaultView(Deliveries);
+            EmployeesDefaultView = CollectionViewSource.GetDefaultView(Employees);
             _picturePath = $"/Images/{_role}-avatar.png";
             HomeVM = new HomeViewModel();
             StockVM = new StockViewModel();
@@ -105,25 +134,37 @@ namespace Trackery_App.ViewModels
             UserSettingsVM = new UserSettingsViewModel();
             CurrentView = HomeVM;
 
+
             HomeViewCommand = new RelayCommand(o =>
             {
                 CurrentView = HomeVM;
+                IsSearchVisible = false;
             });
             StockViewCommand = new RelayCommand(o =>
             {
                 CurrentView = StockVM;
+                SetupFilter();
+                FilteredDataGrid.Filter = FilterStock;
+                IsSearchVisible = true;
             });
             DeliveriesViewCommand = new RelayCommand(o =>
             {
                 CurrentView = DeliveriesVM;
+                SetupFilter();
+                FilteredDataGrid.Filter = FilterDeliveries;
+                IsSearchVisible = true;
             });
             EmployeesViewCommand = new RelayCommand(o =>
             {
                 CurrentView = EmployeesVM;
+                SetupFilter();
+                FilteredDataGrid.Filter = FilterEmployees;
+                IsSearchVisible = true;
             });
             UserSettingsViewCommand = new RelayCommand(o =>
             {
                 CurrentView = UserSettingsVM;
+                IsSearchVisible = false;
             });
 
         }
@@ -195,6 +236,71 @@ namespace Trackery_App.ViewModels
         private void LoadStockData()
         {
             Stock = new ObservableCollection<StockModel>(_stockRepository.GetStock());
+        }
+        private void SetupFilter()
+        {
+            if (CurrentView is StockViewModel)
+            {
+                FilteredDataGrid = StockDefaultView;
+            }
+            else if(CurrentView is DeliveriesViewModel)
+            {
+                FilteredDataGrid = DeliveriesDefaultView;
+            }
+            else if (CurrentView is EmployeesViewModel)
+            {
+                FilteredDataGrid = EmployeesDefaultView;
+            }
+            else
+            {
+                FilteredDataGrid = EmployeesDefaultView;
+            }
+        }
+        private bool FilterEmployees(object obj)
+        {
+            if (obj is UserModel employee)
+            {
+                if (string.IsNullOrWhiteSpace(SearchText))
+                    return true;
+
+                return employee.FirstName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       employee.LastName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       employee.Id.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       employee.Role.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       employee.Username.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       employee.Email.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+            return false;
+        }
+        private bool FilterStock(object obj)
+        {
+            if (obj is StockModel item)
+            {
+                if (string.IsNullOrWhiteSpace(SearchText))
+                    return true;
+
+                return item.SKU.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       item.EAN.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       item.Location.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       item.Name.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       item.Quantity.ToString().IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       item.AdditionalInfo.ToString().IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       item.LastUpdated.ToString().IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+            return false;
+        }
+        private bool FilterDeliveries(object obj)
+        {
+            if (obj is DeliveryModel delivery)
+            {
+                if (string.IsNullOrWhiteSpace(SearchText))
+                    return true;
+
+                return delivery.Id.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       delivery.Sender.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       delivery.DeliveryEstimate.ToString().IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+            return false;
         }
     }
 }
